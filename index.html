@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Yama</title>
+
+    <!-- CSS External -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+
+    <!-- Main Header -->
+    <header class="flex items-center justify-between p-[16px]">
+        <!-- Logo Icon -->
+        <div class="bg-gray-500 rounded-full h-[50px] w-[50px] main-logo"></div>
+
+        <nav>
+            <ul class="flex gap-[8px]">
+                <li><a href="#home-page"
+                        class="text-gray-700 border py-[4px] px-[8px] rounded-[8px] hover:text-blue-500">Home</a></li>
+                <li><a href="#our-profile"
+                        class="text-gray-700 border py-[4px] px-[8px] rounded-[8px] hover:text-blue-500">Our
+                        Profile</a></li>
+                <li><a href="#portfolio"
+                        class="text-gray-700 border py-[4px] px-[8px] rounded-[8px] hover:text-blue-500">Portfolio</a>
+                </li>
+                <li><a href="#message-us"
+                        class="text-gray-700 border py-[4px] px-[8px] rounded-[8px] hover:text-blue-500">Message
+                        Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <hr />
+
+    <!-- Main content -->
+    <main>
+        <!-- Home -->
+        <section id="home-page" class="h-[400px] bg-gray-100">
+            <div class="flex items-center justify-center h-full">
+                <h1 class="text-4xl font-bold text-gray-800">Welcome <span id="user-greeting"></span> to Portfolio
+                    Yama</h1>
+            </div>
+        </section>
+
+        <hr />
+
+        <!-- Our Profile -->
+        <section id="our-profile" class="text-center h-[400px] bg-gray-100">
+            <header>
+                <h1 class="text-4xl font-bold text-gray-800">Our Profile</h1>
+            </header>
+
+            <p class="text-gray-600">We are a team of passionate individuals dedicated to delivering high-quality work.
+            </p>
+        </section>
+
+        <hr />
+
+        <!-- Portfolio -->
+        <section id="portfolio" class="text-center h-[400px] bg-gray-100">
+            <header>
+                <h1 class="text-4xl font-bold text-gray-800">Portfolio</h1>
+            </header>
+
+            <p class="text-gray-600">We are a team of passionate individuals dedicated to delivering high-quality work.
+            </p>
+        </section>
+
+        <hr />
+
+        <!-- Message Us -->
+        <section id="message-us" class="h-[400px] bg-gray-100">
+            <header>
+                <h1 class="text-4xl font-bold text-gray-800">Message Us</h1>
+            </header>
+
+            <form>
+                <label for="user-message" class="block text-gray-700">Your Message:</label>
+                <input id="user-message" type="text" class="border rounded-md w-full p-2"></input>
+                <button type="button" onclick="sendMessage();"
+                    class="mt-2 bg-blue-500 text-white py-2 px-4 rounded-md">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <span>&copy; 2025 Portfolio Yama. All rights reserved.</span>
+    </footer>
+
+    <!-- JS External -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
