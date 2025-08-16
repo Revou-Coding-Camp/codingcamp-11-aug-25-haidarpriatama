@@ -21,7 +21,7 @@ function welcomeSpeech() {
     modal.className = 'modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Compatto!</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Welcome to My Website!</h3>
             <p class="text-gray-600 mb-6">We'd love to know your name to personalize your experience.</p>
             <input type="text" id="name-input" placeholder="Enter your name" 
                    class="w-full border border-gray-200 rounded-lg p-3 mb-6 focus:border-gray-400 focus:outline-none">
