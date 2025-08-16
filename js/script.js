@@ -1,4 +1,4 @@
-// Enhanced JavaScript for Compatto website
+// Enhanced JavaScript for website
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -155,15 +155,15 @@ function handleFormSubmit() {
     
     // Validate name
     if (!name) {
-        showFieldError('nama', 'Nama harus diisi');
+        showFieldError('nama', 'Name is required');
         isValid = false;
     } else if (name.length < 2) {
-        showFieldError('nama', 'Nama minimal 2 karakter');
+        showFieldError('nama', 'Name must be at least 2 characters');
         isValid = false;
     }
     // Validate birthdate
     if (!birthdate) {
-        showFieldError('tanggal', 'Tanggal lahir harus diisi');
+        showFieldError('tanggal', 'Date of birth is required');
         isValid = false;
     } else {
         const birthYear = new Date(birthdate).getFullYear();
@@ -171,12 +171,12 @@ function handleFormSubmit() {
     }
     // Validate gender
     if (!gender) {
-        showFieldError('gender', 'Jenis kelamin harus dipilih');
+        showFieldError('gender', 'Gender must be selected');
         isValid = false;
     }
     // Validate message
     if (!message) {
-        showFieldError('pesan', 'Pesan harus diisi');
+        showFieldError('pesan', 'Message is required');
         isValid = false;
     }
     
@@ -189,10 +189,10 @@ function handleFormSubmit() {
             displayFormResult(name, birthdate, gender.value, message);
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
-            showNotification('Pesan berhasil dikirim!', 'success');
+            showNotification('Message sent successfully!', 'success');
         }, 1000);
     } else {
-        showNotification('Mohon lengkapi form dengan benar', 'error');
+        showNotification('Please complete the form correctly', 'error');
     }
 }
 
@@ -211,20 +211,20 @@ function displayFormResult(name, birthdate, gender, message) {
     const resultContent = `
         <div class="space-y-3">
             <div class="flex">
-                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Nama</span>
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Name</span>
                 <span class="text-gray-600">: ${name}</span>
             </div>
             <div class="flex">
-                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Tanggal Lahir</span>
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Date of Birth</span>
                 <span class="text-gray-600">: ${formattedBirthdate}</span>
             </div>
             <div class="flex">
-                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Jenis Kelamin</span>
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Gender</span>
                 <span class="text-gray-600">: ${gender}</span>
             </div>
             <div class="flex flex-col">
                 <div class="flex">
-                    <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Pesan</span>
+                    <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Message</span>
                     <span class="text-gray-600">:</span>
                 </div>
                 <div class="mt-2 pl-2">
@@ -254,14 +254,14 @@ function validateField(field) {
     switch (fieldId) {
         case 'nama':
             if (!value) {
-                showFieldError(fieldId, 'Nama harus diisi');
+                showFieldError(fieldId, 'Name is required');
             } else if (value.length < 2) {
-                showFieldError(fieldId, 'Nama minimal 2 karakter');
+                showFieldError(fieldId, 'Name must be at least 2 characters');
             }
             break;
         case 'tanggal':
             if (!value) {
-                showFieldError(fieldId, 'Tanggal lahir harus diisi');
+                showFieldError(fieldId, 'Date of birth is required');
             } else {
                 const birthYear = new Date(value).getFullYear();
                 const currentYear = new Date().getFullYear();
@@ -270,7 +270,7 @@ function validateField(field) {
             break;
         case 'pesan':
             if (!value) {
-                showFieldError(fieldId, 'Pesan harus diisi');
+                showFieldError(fieldId, 'Message is required');
             }
             break;
     }
@@ -279,7 +279,7 @@ function validateField(field) {
     if (field.name === 'gender') {
         const genderSelected = document.querySelector('input[name="gender"]:checked');
         if (!genderSelected) {
-            showFieldError('gender', 'Jenis kelamin harus dipilih');
+            showFieldError('gender', 'Gender must be selected');
         } else {
             clearFieldError({ id: 'gender' });
         }
