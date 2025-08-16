@@ -6,16 +6,21 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileMenu();
     setupContactForm();
     setupLoadingAnimations();
+    // Automatically show welcome modal when page loads
+    welcomeSpeech();
 });
 
 /**
  * Welcome speech functionality - prompts user for name and updates greeting
  */
 function welcomeSpeech() {
+    // Prevent body scroll when modal is open
+    document.body.classList.add('modal-open');
+    
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.className = 'modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Compatto!</h3>
             <p class="text-gray-600 mb-6">We'd love to know your name to personalize your experience.</p>
             <input type="text" id="name-input" placeholder="Enter your name" 
@@ -32,10 +37,18 @@ function welcomeSpeech() {
     `;
     
     document.body.appendChild(modal);
-    document.getElementById('name-input').focus();
+    
+    // Use setTimeout to ensure modal is rendered before focusing
+    setTimeout(() => {
+        const nameInput = document.getElementById('name-input');
+        if (nameInput) {
+            nameInput.focus();
+            nameInput.scrollIntoView = function() {}; // Disable scrollIntoView
+        }
+    }, 100);
     
     // Allow Enter key to submit
-    document.getElementById('name-input').addEventListener('keypress', function(e) {
+    modal.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             submitName();
         }
@@ -62,10 +75,13 @@ function submitName() {
  * Close modal
  */
 function closeModal() {
-    const modal = document.querySelector('.fixed.inset-0');
+    const modal = document.querySelector('.modal-overlay');
     if (modal) {
         modal.remove();
     }
+    
+    // Restore body scroll
+    document.body.classList.remove('modal-open');
 }
 
 /**
@@ -152,10 +168,6 @@ function handleFormSubmit() {
     } else {
         const birthYear = new Date(birthdate).getFullYear();
         const currentYear = new Date().getFullYear();
-        if (currentYear - birthYear < 10 || currentYear - birthYear > 100) {
-            showFieldError('tanggal', 'Tanggal lahir tidak valid');
-            isValid = false;
-        }
     }
     // Validate gender
     if (!gender) {
@@ -165,9 +177,6 @@ function handleFormSubmit() {
     // Validate message
     if (!message) {
         showFieldError('pesan', 'Pesan harus diisi');
-        isValid = false;
-    } else if (message.length < 10) {
-        showFieldError('pesan', 'Pesan minimal 10 karakter');
         isValid = false;
     }
     
@@ -192,51 +201,45 @@ function handleFormSubmit() {
  */
 function displayFormResult(name, birthdate, gender, message) {
     const resultDiv = document.getElementById('result');
-    // Format current time
-    const now = new Date();
-    const options = { 
-        weekday: 'short', 
-        year: 'numeric', 
-        month: 'short', 
-        day: '2-digit', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit',
-        timeZoneName: 'short'
-    };
-    const currentTime = now.toLocaleString('en-US', options);
-    // Format birthdate for display
+    const noMessageDiv = document.getElementById('no-message');
+    
+    // Format birthdate for display (DD/MM/YYYY format)
     const birthDateObj = new Date(birthdate);
-    const formattedBirthdate = birthDateObj.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+    const formattedBirthdate = birthDateObj.toLocaleDateString('en-GB');
+    
     // Create result content
-    resultDiv.innerHTML = `
-        <div class="bg-gray-50 p-4 rounded-lg">
-            <p class="text-sm text-gray-600 mb-2">
-                <span class="font-semibold">Current time:</span> 
-                <span>${currentTime}</span>
-            </p>
-            <div class="space-y-1 text-sm">
-                <p><span class="font-semibold text-gray-700">Nama :</span> ${name}</p>
-                <p><span class="font-semibold text-gray-700">Tanggal Lahir :</span> ${formattedBirthdate}</p>
-                <p><span class="font-semibold text-gray-700">Jenis Kelamin :</span> ${gender}</p>
-                <p><span class="font-semibold text-gray-700">Pesan :</span> ${message}</p>
+    const resultContent = `
+        <div class="space-y-3">
+            <div class="flex">
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Nama</span>
+                <span class="text-gray-600">: ${name}</span>
             </div>
-            <button class="mt-4 bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors reset-btn" onclick="resetForm()">Kirim Pesan Lagi</button>
+            <div class="flex">
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Tanggal Lahir</span>
+                <span class="text-gray-600">: ${formattedBirthdate}</span>
+            </div>
+            <div class="flex">
+                <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Jenis Kelamin</span>
+                <span class="text-gray-600">: ${gender}</span>
+            </div>
+            <div class="flex flex-col">
+                <div class="flex">
+                    <span class="font-semibold text-gray-700 w-32 flex-shrink-0">Pesan</span>
+                    <span class="text-gray-600">:</span>
+                </div>
+                <div class="mt-2 pl-2">
+                    <div class="bg-gray-50 rounded-lg p-3 border-l-4 border-gray-300">
+                        <p class="text-gray-700 leading-relaxed">${message}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
+    
+    // Show result and hide no-message placeholder
+    document.getElementById('form-result-content').innerHTML = resultContent;
     resultDiv.classList.remove('hidden');
-    resultDiv.classList.add('bg-gray-50');
-    // Scroll to result
-    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-/**
- * Reset form to initial state
- */
-function resetForm() {
-    document.getElementById('contactForm').reset();
-    document.getElementById('result').classList.add('hidden');
-    clearAllErrors();
+    noMessageDiv.classList.add('hidden');
 }
 
 /**
@@ -262,16 +265,12 @@ function validateField(field) {
             } else {
                 const birthYear = new Date(value).getFullYear();
                 const currentYear = new Date().getFullYear();
-                if (currentYear - birthYear < 10 || currentYear - birthYear > 100) {
-                    showFieldError(fieldId, 'Tanggal lahir tidak valid');
-                }
+            
             }
             break;
         case 'pesan':
             if (!value) {
                 showFieldError(fieldId, 'Pesan harus diisi');
-            } else if (value.length < 10) {
-                showFieldError(fieldId, 'Pesan minimal 10 karakter');
             }
             break;
     }
